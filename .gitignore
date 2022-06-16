@@ -144,3 +144,4 @@ dmypy.json
 .history/
 /pep.csv
 /results/
+/temp_table.csv

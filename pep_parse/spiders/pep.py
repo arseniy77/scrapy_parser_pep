@@ -6,13 +6,13 @@ from pep_parse.items import PepParseItem
 class PepSpider(scrapy.Spider):
     name = 'pep'
     allowed_domains = ['peps.python.org']
-    start_urls = ['http://peps.python.org/']
+    start_urls = ['https://peps.python.org/']
 
     def parse(self, response):
         pep_table = response.css('section#numerical-index')
         # rows = pep_table.css('a[href^="pep-"]')
         rows = pep_table.css('tr')
-        for row in rows[1:20:]:
+        for row in rows[1::]:
             pep_number, pep_name = row.css('a::text').getall()
             link = row.css('a.pep.reference.internal::attr(href)').get()
 
@@ -29,6 +29,6 @@ class PepSpider(scrapy.Spider):
         data = {
             'number': pep_number,
             'name': pep_name,
-            'status': response.css('dd.field-even::text').get(),
+            'status': response.css('dt:contains("Status") + dd::text').get(),
         }
         yield PepParseItem(data)
