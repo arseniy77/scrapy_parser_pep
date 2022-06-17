@@ -1,6 +1,6 @@
 import datetime as dt
 
-from pep_parse.CONSTANTS import PEPS_FILENAME
+from pep_parse.CONSTANTS import BASE_DIR, PEPS_FILENAME
 
 BOT_NAME = 'pep_parse'
 
@@ -85,9 +85,7 @@ ROBOTSTXT_OBEY = True
 
 
 FEEDS = {
-    # Имя файла для сохранения данных теперь указываем здесь,
-    # а не при вызове паука из консоли.
-    PEPS_FILENAME: {
+    f'{BASE_DIR}/pep_%(time)s.csv': {
         # Формат файла.
         'format': 'csv',
         # Поля, данные из которых будут выведены в файл, и их порядок.
@@ -98,24 +96,6 @@ FEEDS = {
         # при значении True существующий файл будет перезаписан.
         'overwrite': True
     },
-    'temp_table.csv': {
-        # Формат файла.
-        'format': 'csv',
-        # Поля, данные из которых будут выведены в файл, и их порядок.
-        # Выведем в этот файл только два поля из трёх.
-        'fields': ['number', 'name', 'status'],
-        # Если файл с заданным именем уже существует, то
-        # при значении False данные будут дописываться в существующий файл;
-        # при значении True существующий файл будет перезаписан.
-        'overwrite': True
-    },
-    # # И ещё один файл.
-    # 'quotes_author.csv': {
-    #     'format': 'csv',
-    #     # В этот файл попадёт только список авторов.
-    #     'fields': ['author'],
-    #     'overwrite': True
-    # },
 }
 
 ITEM_PIPELINES = {
