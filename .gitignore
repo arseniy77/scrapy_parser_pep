@@ -142,6 +142,3 @@ dmypy.json
 
 # Local History for Visual Studio Code
 .history/
-/pep.csv
-/results/
-/temp_table.csv
