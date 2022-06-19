@@ -1,3 +1,5 @@
+import csv
+
 from pep_parse.CONSTANTS import BASE_DIR, STATUSES_FILENAME
 from pep_parse.items import PepParseItem
 
@@ -7,21 +9,23 @@ class PepParsePipeline:
         self.pep_counter = dict()
 
     def process_item(self, item: PepParseItem, spider):
-        if item['status'] not in self.pep_counter.keys():
-            self.pep_counter[item['status']] = 1
-        else:
-            self.pep_counter[item['status']] += 1
+        self.pep_counter[
+            item['status']
+        ] = self.pep_counter.get(item['status'], 0) + 1
         return item
 
     def close_spider(self, spider):
         with open(
                 f'{BASE_DIR}/{STATUSES_FILENAME}',
                 mode='w',
-                encoding='utf-8'
+                encoding='utf-8',
+                newline=''
         ) as f:
-            f.write('Статус,Количество\n')
+            writer = csv.writer(f)
             total_counter = 0
+            output_rows = [['Статус', 'Количество'], ]
             for status, count in self.pep_counter.items():
                 total_counter += count
-                f.write(f'{status},{count}\n')
-            f.write(f'Total,{total_counter}\n')
+                output_rows.append([status, count])
+            output_rows.append(['Total', total_counter])
+            writer.writerows(output_rows)
